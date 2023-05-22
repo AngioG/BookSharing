@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>
+    </EncryptedPassword>
+    <_PublishTargetUrl>ftp://198.37.116.26/198.37.116.26</_PublishTargetUrl>
+    <History>False|2023-05-22T16:07:20.5909672Z;False|2023-05-22T17:03:22.9507076+02:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="ContactPsw">
+      <Value>pcsspbrogtamvgou</Value>
+    </DestinationConnectionStrings>
+    <DestinationConnectionStrings Include="RegisterPsw">
+      <Value>xvgaokdakdoqhtvj</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

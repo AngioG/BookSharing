@@ -1,0 +1,109 @@
+﻿@page
+@model Book_Sharing.Pages.LibroModel
+@{
+    ViewData["Title"] = "Libro";
+}
+
+
+<div class="row">
+    <div class="col s12" style="height:85%;width:85%;">
+        <img src="@(Model.Result.volumeInfo.imageLinks != null ? Model.Result.volumeInfo.imageLinks.thumbnail : "")" style="height:85%;width:85%;" alt="Nessuna Copertina" />
+    </div>
+
+    <div class="row col" style="display: flex;justify-content: center;">
+        <div>
+            <h2>@Model.Result.volumeInfo.title</h2>
+            <h4>@Model.Result.volumeInfo.subtitle</h4>
+            <p>Di @Model.Autori</p>
+            <p>Edizione: @Model.Result.volumeInfo.publisher@(DateTime.TryParse(Model.Result.volumeInfo.publishedDate, out DateTime res) ? ", " + res.ToString("dd/MM/yyyy") : "")</p>
+            <hr />
+            <div class="row">
+                <p class="col" style="margin: auto;width: 50%;">Persone disposte a scambiarlo: @Model.Scambi</p>
+                @if (Model.DatiUtente != null && Model.DatiUtente.Provincia != null)
+                {
+                    @if (!Model.UtenteLibro.Scambio)
+                    {
+                        <a onClick="Scambio()" class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#388e3c ;"><i class="material-icons left">add</i>Aggiungiti</a>
+                    }
+                    @if (Model.UtenteLibro.Scambio)
+                    {
+                        <a onClick="Scambio()" class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#81c784 ;"><i class="material-icons left">arrow_back</i>Togliti</a>
+                    }
+                }
+            </div>
+            <div class="row">
+                <p class="col" style="margin: auto;width: 50%;">Persone disposte a prestarlo: @Model.Prestiti</p>
+                @if (Model.DatiUtente != null && Model.DatiUtente.Provincia != null)
+                {
+                    @if (!Model.UtenteLibro.Prestito)
+                    {
+                        <a onClick="Prestito()" class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#388e3c ;"><i class="material-icons left">add</i>Aggiungiti</a>
+                    }
+                    @if (Model.UtenteLibro.Prestito)
+                    {
+                        <a onClick="Prestito()" class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#81c784 ;"><i class="material-icons left">arrow_back</i>Togliti</a>
+                    }
+                }
+            </div>
+            <div class="row">
+                <p class="col" style="margin: auto;width: 50%;">Persone interessate: @Model.Interessati</p>
+                @if (Model.DatiUtente != null && Model.DatiUtente.Provincia != null)
+                {
+                    @if (!Model.UtenteLibro.Interesse)
+                    {
+                        <a onClick="Interesse()" class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#388e3c ;"><i class="material-icons left">add</i>Aggiungiti</a>
+                    }
+                    @if (Model.UtenteLibro.Interesse)
+                    {
+                        <a onClick="Interesse()" class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#81c784 ;"><i class="material-icons left">arrow_back</i>Togliti</a>
+                    }
+                }
+            </div>
+
+            @if (Model.DatiUtente != null && Model.DatiUtente.Provincia != null)
+            {
+                <hr />
+                <div class=row>
+                    <p class="col" style="margin: auto;width: 50%;">Persone disposte a scambiarlo nella tua provincia: @Model.ScambiProvincia</p>
+                    <a class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#69f0ae ;" asp-Page="PersoneLibro" asp-route-libro="@Model.Result.id" asp-route-provincia="@Model.DatiUtente.Provincia.Nome" asp-route-mode="Scambio"><i class="material-icons left">search</i>Cerca</a>
+                </div>
+                <div class=row>
+                    <p class="col" style="margin: auto;width: 50%;">Persone disposte a prestarlo  nella tua provincia: @Model.PrestitiProvincia</p>
+                    <a class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#69f0ae ;;" asp-Page="PersoneLibro" asp-route-libro="@Model.Result.id" asp-route-provincia="@Model.DatiUtente.Provincia.Nome" asp-route-mode="Prestito"><i class="material-icons left">search</i>Cerca</a>
+                </div>
+                <div class=row>
+                    <p class="col" style="margin: auto;width: 50%;">Persone interessate  nella tua provincia: @Model.InteressatiProvincia</p>
+                    <a class="waves-effect waves-light btn-small col" style="margin: auto;width: 50%;background-color:#69f0ae;" asp-Page="PersoneLibro" asp-route-libro="@Model.Result.id" asp-route-provincia="@Model.DatiUtente.Provincia.Nome" asp-route-mode="Interesse"><i class="material-icons left">search</i>Cerca</a>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <br />
+    @Model.Result.volumeInfo.description.Replace("<p>", "").Replace("</p>", "").Replace("<br>", "").Replace("<br />", "")
+</div>
+
+<form method="get" id="cambia">
+    <input name="id" type="hidden" value="@Model.Result.id" />
+    <input id="mode" type="hidden" name="mode" />
+</form>
+
+<script>
+    function Scambio() {
+        document.getElementById("mode").value = "Scambio";
+        document.getElementById("cambia").submit();
+    }
+
+    function Prestito() {
+        document.getElementById("mode").value = "Prestito";
+        document.getElementById("cambia").submit();
+    }
+
+    function Interesse() {
+        document.getElementById("mode").value = "Interesse";
+        document.getElementById("cambia").submit();
+    }
+</script>

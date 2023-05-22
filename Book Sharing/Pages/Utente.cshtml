@@ -1,0 +1,98 @@
+﻿@page
+@model Book_Sharing.Pages.UtenteModel
+@{
+    ViewData["Title"] = "Utente";
+}
+<h1>@Model.Username</h1>
+<div class="row">
+    <form class="col s12" method="post" id="frmSearch">
+        <div class="row">
+            <div class="input-field col s6">
+                <input placeholder="Titolo..." type="text" name="Titolo" />
+                <label for="first_name">Titolo</label>
+            </div>
+            <div class="input-field col s6">
+                <input placeholder="Autore..." type="text" name="Autore" />
+                <label for="first_name">Autore</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s2">
+                <p>
+                    <label>
+                        <input type="checkbox" asp-for="@Model.Scambio" id="scambio" onclick="Cerca()" />
+                        <span>Scambio</span>
+                    </label>
+                </p>
+            </div>
+            <div class="input-field col s2">
+                <p>
+                    <label>
+                        <input type="checkbox" asp-for="@Model.Prestito" id="prestito" onclick="Cerca()" />
+                        <span>Prestito</span>
+                    </label>
+                </p>
+            </div>
+            <div class="input-field col s2">
+                <p>
+                    <label>
+                        <input type="checkbox" asp-for="@Model.Interesse" id="interesse" onclick="Cerca()" />
+                        <span>Interesse</span>
+                    </label>
+                </p>
+            </div>
+            <div class="input-field col s6"></div>
+        </div>
+    </form>
+
+    <a class="waves-effect waves-light btn-large" onclick="Cerca()" style="background-color:#4caf50;"><i class="material-icons right">search</i>Cerca</a>
+</div>
+
+<table class="table highlight">
+    <thead>
+    <th>Titolo</th>
+    <th>Autore</th>
+    <th>Modalità</th>
+    </thead>
+
+    @foreach (var ul in Model.Utenti)
+    {
+        <tr onclick='Submit("@ul.Id")'>
+
+            <td>@ul.Titolo</td>
+            <td>@ul.Autore</td>
+            @{
+                var modalita = "";
+                if (ul.Scambio)
+                    modalita += "Scambio, ";
+                if (ul.Prestito)
+                    modalita += "Prestito, ";
+                if (ul.Interesse)
+                    modalita += "Interesse, ";
+
+                modalita = modalita.Substring(0, modalita.Length - 2);
+            }
+            <td>@modalita</td>
+
+
+        </tr>
+    }
+</table>
+
+<form method="get" action="Contatta" id="frmChange">
+    <input type=hidden id="valId" name="id" />
+</form>
+
+<script>
+
+    function Cerca() {
+        document.getElementById("frmSearch").submit();
+    }
+
+    function Submit(id) {
+        document.getElementById("valId").value = id;
+        document.getElementById("frmChange").submit();
+    }
+
+</script>

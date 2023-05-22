@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject DataDbContext _context;
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (User.IsInRole("User"))
+    {
+        <li style="margin-right:5px;">
+
+            <a style="color:#145B18" ; asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                Ciao @{
+                    var UserId = UserManager.GetUserId(User);
+                    var usr = _context.Utenti.FirstOrDefault(u => u.IdentityUid == UserId).Username;
+        }
+        @usr!
+            </a>
+        </li>
+    }
+    else
+    {
+        <li style="margin-right:5px;">
+
+            <a style="color:#145B18" ; asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Ciao! Inserisci i tuoi dati</a>
+        </li>
+    }
+
+    <li>
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" style="margin-right:5px;">
+            <!--<button type="submit" class="nav-link btn btn-link " style="background-color:darkgreen; color:white;">Logout</button>-->
+            <button class="btn waves-effect waves-light" type="submit" style="background-color:#145B18; color:white;">
+                Logout
+            </button>
+
+        </form>
+    </li>
+}
+else
+{
+    <li>
+        <a style="color:#145B18" ; asp-area="Identity" asp-page="/Account/Register">Registrati</a>
+    </li>
+    <li>
+        <a style="color:#145B18;" asp-area="Identity" asp-page="/Account/Login">Accedi</a>
+    </li>
+}

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Users\angioletti\Downloads\Book Sharing\Book Sharing\bin\Release\net6.0\publish\</_PublishTargetUrl>
+    <History>True|2023-05-22T14:30:56.3014021Z;False|2023-05-22T16:25:01.5761912+02:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="ContactPsw">
+      <Value>pcsspbrogtamvgou</Value>
+    </DestinationConnectionStrings>
+    <DestinationConnectionStrings Include="RegisterPsw">
+      <Value>xvgaokdakdoqhtvj</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

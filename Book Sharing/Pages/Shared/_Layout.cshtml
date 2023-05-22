@@ -1,0 +1,90 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookSharing</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BookSharing.styles.css" asp-append-version="true" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+<body style="background-color:#e8f5e9;">
+    <header>
+        <nav style="background-color: #a5d6a7;  border-bottom: 2px solid #145B18; margin-bottom:5px; color:#145B18;">
+            <div class="nav-wrapper green-text text-darken-3">
+                <a class="brand-logo center" asp-area="" asp-page="/Index" style="font-weight: bold;font-size: 3rem;font-family: Arial, Helvetica, sans-serif;color:#145B18;">Book Sharing</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="left hide-on-med-and-down">
+                    <li>
+                        <a style="color:#145B18;" asp-area="" asp-page="/Index">Home</a>
+                    </li>
+                    <li>
+                        <a style="color:#145B18"; asp-area="" asp-page="/Libri">Libreria</a>
+                    </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li>
+                            <a style="color:#145B18"; asp-area="" asp-page="/Library">I miei libri</a>
+                        </li>
+                        <li>
+                            <a style="color:#145B18" asp-area="" asp-page="/WishList">Lista dei desideri</a>
+                        </li>
+                    }
+                </ul>
+                <ul class="right hide-on-med-and-down">
+                    <partial name="_LoginPartial" />
+                </ul>
+            </div>
+        </nav>
+
+        <ul class="sidenav" id="mobile-demo">
+            <li>
+                <a style="color:#145B18;" asp-area="" asp-page="/Index">Home</a>
+            </li>
+            <li>
+                <a style="color:#145B18" ; asp-area="" asp-page="/Libri">Libreria</a>
+            </li>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li>
+                    <a style="color:#145B18" ; asp-area="" asp-page="/Library">I miei libri</a>
+                </li>
+                <li>
+                    <a style="color:#145B18" asp-area="" asp-page="/WishList">Lista dei desideri</a>
+                </li>
+            }
+            <partial name="_LoginPartial" />
+        </ul>
+
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+    </script>
+
+</body>
+
+</html>

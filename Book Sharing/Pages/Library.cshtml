@@ -1,0 +1,107 @@
+﻿@page
+@model Book_Sharing.Pages.LibraryModel
+@{
+    ViewData["Title"] = "I miei libri";
+}
+<div class="row">
+    <form class="col s12" method="get" id="frmSrc">
+        <div class="row">
+            <div class="input-field col s12">
+                <input placeholder="Titolo..." id="src" type="text" name="titolo" value="@Model.Titolo">
+                <label for="first_name">Titolo</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input placeholder="Autore..." id="src" type="text" name="autore" value="@Model.Autore">
+                <label for="first_name">Autore</label>
+            </div>
+        </div>
+
+    </form>
+
+    <a class="waves-effect waves-light btn-large" onclick="Cerca()" style="background-color:#4caf50;"><i class="material-icons right">search</i>Cerca</a>
+</div>
+
+
+
+@if (Model.Risultati == 0)
+{
+    <div>
+        <p class="text-danger">Nessun risultato trovato</p>
+    </div>
+}
+@if (Model.Risultati > 0)
+{
+    <div class="row">
+        <p class="text-info">Totale risultati: @Model.Risultati</p>
+    </div>
+
+    @for (int x = 0; x < 6; x += 3)
+    {
+        @if (Model.Libri.Count <= x)
+        {
+            break;
+        }
+
+        <div class="row">
+            @for (int y = 0; y < 3; y++)
+            {
+                @if (Model.Libri.Count <= x + y)
+                {
+                    <div class="card col" style="@(y != 0 ? "margin-left:4%;" : "")background-color:#E5FFE7;"></div>
+                }
+                @if (Model.Libri.Count > x + y)
+                {
+                    <div class="card col" style="@(y != 0 ? "margin-left:4%;" : "")">
+                        <a asp-page="Libro" asp-route-id="@Model.Libri[x+y].id">
+                            <img src="@(Model.Libri[x+y].volumeInfo.imageLinks != null ? Model.Libri[x+y].volumeInfo.imageLinks.smallThumbnail : "")" class="card-img-top" style="height:75%;" alt="Copertina">
+                            <div class="card-body">
+                                <h5 class="card-title">@Model.Libri[x + y].volumeInfo.title</h5>
+                                <p class="card-text">@(Model.Libri[x + y].volumeInfo.authors != null ? Model.Libri[x + y].volumeInfo.authors[0] : "Anonimo")</p>
+                                <p>@(Model.Libri[x + y].volumeInfo.publisher != null ? Model.Libri[x + y].volumeInfo.publisher : "Nessun editore")</p>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+    }
+
+    <div class="row">
+        <div class="col">
+            <a class="waves-effect waves-light btn-large @(Model.Pagina == 1 ? "disabled" : "")" style="width: 100%;background-color:#4caf50;" onclick="Precedente()"><i class="material-icons left">arrow_back</i>Precedente</a>
+        </div>
+        <div class="col" style="margin-top:-5px;">
+            <p style="text-align:center; font-size:2.5em;">Pagina: @(Model.Pagina)/@(Math.Ceiling((decimal)Model.Risultati / 9))</p>
+        </div>
+        <div class="col">
+            <a class="waves-effect waves-light btn-large @((Model.Pagina)*9 >= Model.Risultati ? "disabled" : "")" style="width: 100%;background-color:#4caf50;" onclick="Successiva()"><i class="material-icons right">arrow_forward</i>Successiva</a>
+        </div>
+    </div>
+
+    <form method="get" id="frmPag">
+        <input id="pagina" type="hidden" name="pagina" value="@Model.Pagina">
+        <input type="hidden" name="titolo" value="@Model.Titolo">
+        <input type="hidden" name="autore" value="@Model.Autore">
+    </form>
+}
+
+
+<script>
+    function Cerca() {
+        document.getElementById("frmSrc").submit();
+    }
+
+    function Successiva() {
+        document.getElementById("pagina").value = parseInt(document.getElementById("pagina").value) + 1;
+        document.getElementById("frmPag").submit();
+    }
+
+    function Precedente() {
+        document.getElementById("pagina").value = parseInt(document.getElementById("pagina").value) - 1;
+        document.getElementById("frmPag").submit();
+    }
+
+</script>

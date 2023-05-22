@@ -1,0 +1,57 @@
+﻿@page
+@model Book_Sharing.Pages.ContattaModel
+@{
+    ViewData["Title"] = "Contatta";
+}
+<h4>Contatta @Model.UtenteLibro.Utente.Username riguardo a @Model.UtenteLibro.Titolo</h4>
+<br />
+<form method="post">
+    <p>Quali di queste opzioni descrive meglio cosa vuoi fare?</p>
+    <div class="input-field col s12">
+        <select asp-for="@Model.Modalità">
+            <option value=0 disabled selected>Scegli...</option>
+            @if (Model.UtenteLibro.Interesse)
+            {
+                <option value=1>Voglio scambiare il libro</option>
+                <option value=2>Voglio prestare il libro</option>
+                <option value=3>Voglio prestare o scambiare il libro</option>
+            }
+            @if (Model.UtenteLibro.Prestito)
+            {
+                <option value=4>Mi piacerebbe ricevere il libro in prestito</option>
+            }
+            @if (Model.UtenteLibro.Scambio)
+            {
+                <option value=5>Mi piacerebbe ricevere questo libro in cambio di un altro</option>
+            }
+        </select>
+    </div>
+
+    <p>
+        Puoi aggiungere maggiori informazioni, se sei tu il possessore del libro puoi scrivere in che condizioni è, inserire maggiori informazioni sull'edizione
+        o dire che libri vorresti ricevere in cambio.
+        Se vuoi ricevere il libro puoi scrivere per quanto tempo ti servirebbe ed, eventualmente, che libri vorresti scambiare.
+        Ricorda di non inserire dati personali
+    </p>
+    <a asp-page="Utente" asp-route-utente="@Model.UtenteLibro.fkUtente.ToString()" style="color:#00c853">Guarda i libri che ha ed a cui è interessato l'utente'</a>
+    <br />
+    <div class="form-group">
+        <textarea class="form-control" rows="5" asp-for="@Model.Descrizione" style="height:350px;"></textarea>
+    </div>
+
+    <br/>
+    <button class="btn waves-effect waves-light" type="submit" style="width:100%;height:60px;background-color:#4caf50;">
+        Invia
+        <i class="material-icons right">send</i>
+    </button>
+    <div class="alert alert-warning" role="alert">
+        Attenzione! In questo modo @Model.UtenteLibro.Utente.Username saprà la tua mail
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    });
+</script>

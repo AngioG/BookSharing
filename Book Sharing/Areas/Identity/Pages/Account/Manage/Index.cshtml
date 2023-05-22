@@ -1,0 +1,98 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profilo";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h3>@ViewData["Title"]</h3>
+<div class="row">
+    <div class="col-md-12">
+        <form id="profile-form" method="post">
+
+            <div class="form-floating" class="col-md-3">
+                <input asp-for="@Model.Utente.Username" class="form-control" />
+                <label asp-for="@Model.Utente.Username" class="form-label"></label>
+            </div>
+
+            <div class="form-floating" class="col-md-3">
+                <input asp-for="@Model.Utente.Nome" class="form-control" />
+                <label asp-for="@Model.Utente.Nome" class="form-label"></label>
+            </div>
+
+            <div class="form-floating" class="col-md-3">
+                <input asp-for="@Model.Utente.Cognome" class="form-control" />
+                <label asp-for="@Model.Utente.Cognome" class="form-label"></label>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <select asp-for="@Model.Regione" id="regione">
+                        @if (Model.Regione != null)
+                        {
+                            <option>@Model.Regione</option>
+                        }
+                        @if (Model.Regione == null)
+                        {
+                            <option disabled selected>Scegli la regione</option>
+                        }
+                        @foreach (var r in Model.Regioni)
+                        {
+                            <option>@r.Nome</option>
+                        }
+                    </select>
+                    <label asp-for="@Model.Regione" class="form-label">Regione</label>
+                </div>
+
+                <div class="input-field col s12">
+                    <select asp-for="@Model.Utente.Provincia">
+                        @if (Model.Utente.Provincia != null)
+                        {
+                            <option>@Model.Utente.Provincia</option>
+                        }
+                        @if (Model.Utente.Provincia == null)
+                        {
+                            <option disabled selected>Scegli la provincia</option>
+                        }
+                        @foreach (var p in Model.Province)
+                        {
+                            <option>@p.Nome</option>
+                        }
+                    </select>
+                    <label asp-for="@Model.Utente.Provincia" class="form-label"></label>
+                </div>
+            </div>
+
+            <div class="form-floating" class="col-md-3">
+                <input asp-for="@Model.Utente.CAP" class="form-control" />
+                <label asp-for="@Model.Utente.CAP" class="form-label"></label>
+            </div>
+
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary" style="background-color:#4caf50;">Salva</button>
+
+            <input type="hidden" asp-for="@Model.Modifica" value="@Model.Modifica" id="cambia" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}
+
+<script>
+    select = document.getElementById("regione");
+    select.addEventListener("change", Submit);
+
+    function Submit()
+    {
+        document.getElementById("cambia").value = "false";
+        frm = document.getElementById("profile-form");
+        frm.submit();
+        document.getElementById("cambia").value = "true";
+    }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+</script>

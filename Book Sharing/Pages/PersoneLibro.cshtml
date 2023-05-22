@@ -1,0 +1,115 @@
+﻿@page
+@model Book_Sharing.Pages.PersoneLibroModel
+@{
+    ViewData["Title"] = "Persone Libro";
+}
+
+<h1>@Model.Titolo</h1>
+<h4>@Model.Autore</h4>
+
+<div class="row">
+    <form class="col s12" method="post" id="frmSearch">
+        <div class="row">
+            <div class="input-field col s6">
+                <input placeholder="Proprietario..." id="src" type="text" name="Proprietario" />
+                <label for="first_name">Proprietario</label>
+            </div>
+            <div class="input-field col s6">
+                <select asp-for="@Model.Provincia">
+                    @if (!string.IsNullOrWhiteSpace(Model.Provincia))
+                    {
+                        <option>@Model.Provincia</option>
+                    }
+                    @if (string.IsNullOrWhiteSpace(Model.Provincia))
+                    {
+                        <option>Filtra per Provincia</option>
+                    }
+                    @foreach (var p in Model.EleProvince)
+                    {
+                        <option>@p.Nome</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s2">
+                <p>
+                    <label>
+                        <input type="checkbox" asp-for="@Model.Scambio" id="scambio" onclick="Cerca()" />
+                        <span>Scambio</span>
+                    </label>
+                </p>
+            </div>
+            <div class="input-field col s2">
+                <p>
+                    <label>
+                        <input type="checkbox" asp-for="@Model.Prestito" id="prestito" onclick="Cerca()" />
+                        <span>Prestito</span>
+                    </label>
+                </p>
+            </div>
+            <div class="input-field col s2">
+                <p>
+                    <label>
+                        <input type="checkbox" asp-for="@Model.Interesse" id="interesse" onclick="Cerca()" />
+                        <span>Interesse</span>
+                    </label>
+                </p>
+            </div>
+            <div class="input-field col s6"></div>
+        </div>
+    </form>
+
+    <a class="waves-effect waves-light btn-large" onclick="Cerca()" style="background-color:#4caf50;"><i class="material-icons right">search</i>Cerca</a>
+
+    <!--<a class="waves-effect waves-light btn-large" onclick="Cerca()"><i class="material-icons right">cloud</i>Cerca</a>-->
+</div>
+
+<table class="table">
+    <thead>
+    <th>Username</th>
+    <th>Provincia</th>
+    <th>Modalità</th>
+    <th></th>
+    <th></th>
+    </thead>
+    <tbody>
+        @foreach (var ul in Model.Utenti)
+        {
+            <tr>
+                <td>@ul.Utente.Username</td>
+                <td>@ul.Utente.Provincia.Nome</td>
+                @{
+                    var modalita = "";
+                    if (ul.Scambio)
+                        modalita += "Scambio, ";
+                    if (ul.Prestito)
+                        modalita += "Prestito, ";
+                    if (ul.Interesse)
+                        modalita += "Interesse, ";
+
+                    modalita = modalita.Substring(0, modalita.Length - 2);
+                }
+                <td>@modalita</td>
+
+                <td><a asp-page="Utente" asp-route-utente="@ul.fkUtente.ToString()" style="color:#00c853"><i class="material-icons left">person</i>Informazioni Utente</a></td>
+                <td><a asp-page="Contatta" asp-route-id="@ul.Id" style="color:#00c853"><i class="material-icons left">email</i>Contatta</a></td>
+            </tr>
+
+        }
+    </tbody>
+
+</table>
+
+<script>
+
+    function Cerca() {
+        document.getElementById("frmSearch").submit();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    });
+</script>
