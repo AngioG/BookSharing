@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Book_Sharing.Data;
 
 namespace Book_Sharing.Areas.Identity.Pages.Account
 {
@@ -21,11 +21,15 @@ namespace Book_Sharing.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly DataDbContext _context;
+        private readonly UserDbContext _userContext;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, DataDbContext dbc, UserDbContext udb)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _context = dbc;
+            _userContext = udb; ;
         }
 
         /// <summary>
@@ -103,7 +107,7 @@ namespace Book_Sharing.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            //returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -115,7 +119,19 @@ namespace Book_Sharing.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    var IdentityUser = _userContext.Users.FirstOrDefault(u => u.NormalizedEmail == Input.Email.ToUpper());
+                    var Dati_Utente = _context.Utenti.FirstOrDefault(u => u.IdentityUid == IdentityUser.Id);
+
+                    if (returnUrl == null)
+                    {
+                        if (Dati_Utente != null)
+                            return RedirectToPage("../Index");
+                        else
+                            return RedirectToPage("./Manage/Index");
+
+                    }
+                    else
+                        return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
