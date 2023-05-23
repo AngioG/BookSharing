@@ -7,18 +7,17 @@
     <form class="col s12" method="get" id="frmSrc">
         <div class="row">
             <div class="input-field col s12">
-                <input placeholder="Titolo..." id="src" type="text" name="titolo" value="@Model.Titolo">
-                <label for="first_name">Titolo</label>
+                <input placeholder="Titolo..." type="text" name="titolo" value="@Model.Titolo" id="inputTitolo">
+                <label for="inputTitolo">Titolo</label>
             </div>
         </div>
 
         <div class="row">
             <div class="input-field col s12">
-                <input placeholder="Autore..." id="src" type="text" name="autore" value="@Model.Autore">
-                <label for="first_name">Autore</label>
+                <input placeholder="Autore..." type="text" name="autore" value="@Model.Autore" id="inputAutore">
+                <label for="inputAutore">Autore</label>
             </div>
         </div>
-
     </form>
 
     <a class="green waves-effect waves-light btn-large" onclick="Cerca()" style="background-color:#4caf50;"><i class="material-icons right">search</i>Cerca</a>
@@ -34,20 +33,23 @@
         {
             @if (Model.MostRead.Count <= y)
             {
-                <div class="card col" style="@(y != 0 ? "margin-left:4%;" : "")background-color:#e8f5e9;">
+                <div class="col-md-4" style="margin-bottom:4%;">
+                    <div class="card" style="margin-left:2%;margin-right:2%;background-color:#e8f5e9;"></div>
                 </div>
             }
             @if (Model.MostRead.Count > y)
             {
-                <div class="card col" style="@(y != 0 ? "margin-left:4%;" : "")">
-                    <a asp-page="Libro" asp-route-id="@Model.MostRead[y].id">
-                        <img src="@(Model.MostRead[y].volumeInfo.imageLinks != null ? Model.MostRead[y].volumeInfo.imageLinks.smallThumbnail : "")" class="card-img-top" style="height:75%;" alt="Copertina">
-                        <div class="card-body">
-                            <h5 class="card-title">@(/*Model.Libri[x + y].volumeInfo.title.Length > 20 ? Model.Libri[x + y].volumeInfo.title.Substring(0, 17) + "..." : */Model.MostRead[y].volumeInfo.title)</h5>
-                            <p class="card-text">@(Model.MostRead[y].volumeInfo.authors != null ? /*(Model.Libri[x + y].volumeInfo.authors[0].Length > 20 ? Model.Libri[x + y].volumeInfo.authors[0].Substring(0, 17) + "..." : */Model.MostRead[y].volumeInfo.authors[0]/*)*/ : "Anonimo")</p>
-                            <p>@(Model.MostRead[y].volumeInfo.publisher != null ? Model.MostRead[y].volumeInfo.publisher : "")</p>
-                        </div>
-                    </a>
+                <div class="col-md-4" style="margin-bottom:4%;">
+                    <div class="card overflow-hidden" style="margin-left:2%;margin-right:2%;height:100%;">
+                        <a asp-page="Libro" asp-route-id="@Model.MostRead[y].id">
+                            <img src="@(Model.MostRead[y].volumeInfo.imageLinks != null ? Model.MostRead[y].volumeInfo.imageLinks.smallThumbnail : "")" class="card-img-top" style="height:75%;" alt="Copertina">
+                            <div class="card-body">
+                                <h5 class="card-title">@(/*Model.Libri[x + y].volumeInfo.title.Length > 20 ? Model.Libri[x + y].volumeInfo.title.Substring(0, 17) + "..." : */Model.MostRead[y].volumeInfo.title)</h5>
+                                <p class="card-text">@(Model.MostRead[y].volumeInfo.authors != null ? /*(Model.Libri[x + y].volumeInfo.authors[0].Length > 20 ? Model.Libri[x + y].volumeInfo.authors[0].Substring(0, 17) + "..." : */Model.MostRead[y].volumeInfo.authors[0]/*)*/ : "Anonimo")</p>
+                                <p>@(Model.MostRead[y].volumeInfo.publisher != null ? Model.MostRead[y].volumeInfo.publisher : "")</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             }
 
@@ -74,20 +76,23 @@
             {
                 @if (Model.Libri.Count <= x + y)
                 {
-                    <div class="card col" style="@(y != 0 ? "margin-left:4%;" : "")background-color:#e8f5e9;">
+                    <div class="col-md-4">
+                        <div class="card" style="margin-left:2%;margin-right:2%;background-color:#e8f5e9;"></div>
                     </div>
                 }
                 @if (Model.Libri.Count > x + y)
                 {
-                    <div class="card col" style="@(y != 0 ? "margin-left:4%;" : "")">
-                        <a asp-page="Libro" asp-route-id="@Model.Libri[x+y].id">
-                            <img src="@(Model.Libri[x+y].volumeInfo.imageLinks != null ? Model.Libri[x+y].volumeInfo.imageLinks.smallThumbnail : "")" class="card-img-top" style="height:75%;" alt="Copertina">
-                            <div class="card-body">
-                                <h5 class="card-title">@(/*Model.Libri[x + y].volumeInfo.title.Length > 20 ? Model.Libri[x + y].volumeInfo.title.Substring(0, 17) + "..." : */Model.Libri[x + y].volumeInfo.title)</h5>
-                                <p class="card-text">@(Model.Libri[x + y].volumeInfo.authors != null ? /*(Model.Libri[x + y].volumeInfo.authors[0].Length > 20 ? Model.Libri[x + y].volumeInfo.authors[0].Substring(0, 17) + "..." : */Model.Libri[x + y].volumeInfo.authors[0]/*)*/ : "Anonimo")</p>
-                                <p>@(Model.Libri[x + y].volumeInfo.publisher != null ? Model.Libri[x + y].volumeInfo.publisher : "")</p>
-                            </div>
-                        </a>
+                    <div class="col-md-4">
+                        <div class="card" style="margin-left:2%;margin-right:2%;height:100%;">
+                            <a asp-page="Libro" asp-route-id="@Model.Libri[x+y].id">
+                                <img src="@(Model.Libri[x+y].volumeInfo.imageLinks != null ? Model.Libri[x+y].volumeInfo.imageLinks.smallThumbnail : "")" class="card-img-top" style="height:75%;" alt="Copertina">
+                                <div class="card-body">
+                                    <h5 class="card-title">@(/*Model.Libri[x + y].volumeInfo.title.Length > 20 ? Model.Libri[x + y].volumeInfo.title.Substring(0, 17) + "..." : */Model.Libri[x + y].volumeInfo.title)</h5>
+                                    <p class="card-text">@(Model.Libri[x + y].volumeInfo.authors != null ? /*(Model.Libri[x + y].volumeInfo.authors[0].Length > 20 ? Model.Libri[x + y].volumeInfo.authors[0].Substring(0, 17) + "..." : */Model.Libri[x + y].volumeInfo.authors[0]/*)*/ : "Anonimo")</p>
+                                    <p>@(Model.Libri[x + y].volumeInfo.publisher != null ? Model.Libri[x + y].volumeInfo.publisher : "")</p>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 }
 
@@ -116,18 +121,34 @@
 
 
 <script>
-    function Cerca() {
-        document.getElementById("frmSrc").submit();
-    }
+                function Cerca() {
+                    document.getElementById("frmSrc").submit();
+                }
 
-    function Successiva() {
-        document.getElementById("pagina").value = parseInt(document.getElementById("pagina").value) + 1;
-        document.getElementById("frmPag").submit();
-    }
+                function Successiva() {
+                    document.getElementById("pagina").value = parseInt(document.getElementById("pagina").value) + 1;
+                    document.getElementById("frmPag").submit();
+                }
 
-    function Precedente() {
-        document.getElementById("pagina").value = parseInt(document.getElementById("pagina").value) - 1;
-        document.getElementById("frmPag").submit();
-    }
+                function Precedente() {
+                    document.getElementById("pagina").value = parseInt(document.getElementById("pagina").value) - 1;
+                    document.getElementById("frmPag").submit();
+                }
+
+            document.getElementById("inputTitolo")
+            .addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                    Cerca();
+            }
+        });
+
+        document.getElementById("inputAutore")
+            .addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+    Cerca();
+            }
+        });
 
 </script>

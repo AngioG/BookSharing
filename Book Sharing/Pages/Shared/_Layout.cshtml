@@ -1,4 +1,7 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject DataDbContext _context
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -28,12 +31,12 @@
                         <a style="color:#145B18;" asp-area="" asp-page="/Index">Home</a>
                     </li>
                     <li>
-                        <a style="color:#145B18"; asp-area="" asp-page="/Libri">Libreria</a>
+                        <a style="color:#145B18" ; asp-area="" asp-page="/Libri">Libreria</a>
                     </li>
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li>
-                            <a style="color:#145B18"; asp-area="" asp-page="/Library">I miei libri</a>
+                            <a style="color:#145B18" ; asp-area="" asp-page="/Library">I miei libri</a>
                         </li>
                         <li>
                             <a style="color:#145B18" asp-area="" asp-page="/WishList">Lista dei desideri</a>
@@ -62,7 +65,48 @@
                     <a style="color:#145B18" asp-area="" asp-page="/WishList">Lista dei desideri</a>
                 </li>
             }
-            <partial name="_LoginPartial" />
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @if (User.IsInRole("User"))
+                {
+                    <li style="margin-right:5px;">
+
+                        <a style="color:#145B18" ; asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                            Ciao @{
+                                var UserId = UserManager.GetUserId(User);
+                                var usr = _context.Utenti.FirstOrDefault(u => u.IdentityUid == UserId).Username;
+                            }
+                            @usr!
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li style="margin-right:5px;">
+
+                        <a style="color:#145B18" ; asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Ciao! Inserisci i tuoi dati</a>
+                    </li>
+                }
+
+                <li>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post" style="padding-left:32px;">
+                        <!--<button type="submit" class="nav-link btn btn-link " style="background-color:darkgreen; color:white;">Logout</button>-->
+                    <button class="btn waves-effect waves-light" type="submit" style="background-color:#145B18; color:white;">
+                            Logout
+                        </button>
+
+                    </form>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a style="color:#145B18" ; asp-area="Identity" asp-page="/Account/Register">Registrati</a>
+                </li>
+                <li>
+                    <a style="color:#145B18;" asp-area="Identity" asp-page="/Account/Login">Accedi</a>
+                </li>
+            }
         </ul>
 
     </header>

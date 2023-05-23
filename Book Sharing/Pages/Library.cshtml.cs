@@ -50,7 +50,8 @@ namespace Book_Sharing.Pages
 
             var IdentityUser = await _userManager.GetUserAsync(User);
             var DatiUtente = await _context.Utenti.Include("Provincia").FirstOrDefaultAsync(u => u.IdentityUid == IdentityUser.Id);
-            var utenteLibri = _context.UtentiLibri.Where(ul => ul.fkUtente == DatiUtente.PkUtente && (ul.Scambio || ul.Prestito) && ul.Titolo.Contains(Titolo) && ul.Autore.Contains(Autore)).ToList();
+
+            var utenteLibri = _context.UtentiLibri.Where(ul => ul.fkUtente == DatiUtente.PkUtente && (ul.Scambio || ul.Prestito) && (ul.Titolo.ToUpper().Contains(Titolo.ToUpper()) || titolo == null) && (ul.Autore.ToUpper().Contains(Autore.ToUpper()) || autore == null)).ToList();
 
             Risultati = utenteLibri.Count();
             

@@ -6,11 +6,11 @@
 
 
 <div class="row">
-    <div class="col s12" style="height:85%;width:85%;">
+    <div class="col-md-6" style="height:85%;width:85%;margin-bottom:4%;text-align: center;">
         <img src="@(Model.Result.volumeInfo.imageLinks != null ? Model.Result.volumeInfo.imageLinks.thumbnail : "")" style="height:85%;width:85%;" alt="Nessuna Copertina" />
     </div>
 
-    <div class="row col" style="display: flex;justify-content: center;">
+    <div class="row col-md-6" style="display: flex;justify-content: center;">
         <div>
             <h2>@Model.Result.volumeInfo.title</h2>
             <h4>@Model.Result.volumeInfo.subtitle</h4>
